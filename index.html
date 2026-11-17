@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energia50001.pl | Audyt Energetyczny i ISO 50001</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--navy:#0B1F3A;
+--blue:#1E3A8A;
+--green:#22C55E;
+--gray:#F5F7FB;
+--text:#1F2937;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+
+body{
+font-family:'Inter',sans-serif;
+background:white;
+color:var(--text);
+line-height:1.6;
+}
+
+.container{
+width:90%;
+max-width:1200px;
+margin:auto;
+}
+
+nav{
+position:sticky;
+top:0;
+background:white;
+border-bottom:1px solid #e5e7eb;
+z-index:1000;
+}
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 0;
+}
+
+.logo{
+font-size:24px;
+font-weight:800;
+color:var(--navy);
+}
+
+.nav-links{
+display:flex;
+gap:30px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:#374151;
+font-weight:600;
+}
+
+
+.nav-links a {
+    text-decoration: none;
+    color: #374151;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Efekt po najechaniu myszką */
+.nav-links a:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(11, 31, 58, 0.75),
+        rgba(30, 58, 138, 0.75),
+        rgba(34, 197, 94, 0.75)
+    );
+    color: #FFFFFF;
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+    transform: translateY(-2px);
+}
+
+
+
+.hero{
+    padding:0 0 80px 0;
+}
+
+
+
+.hero-card{
+    background:linear-gradient(135deg,#0B1F3A,#1E3A8A,#22C55E);
+    border-radius:0;
+    padding:60px max(5%, calc((100vw - 1200px) / 2));
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    gap:40px;
+    flex-wrap:wrap;
+
+    width:100vw;
+    max-width:100vw;
+    margin-left:calc((100% - 100vw) / 2);
+}
+
+
+.hero-left{
+flex:1;
+min-width:300px;
+}
+
+.hero-left h1{
+font-size:56px;
+line-height:1.1;
+margin-bottom:20px;
+}
+
+.hero-left p{
+font-size:18px;
+line-height:1.7;
+margin-bottom:30px;
+opacity:.95;
+max-width:680px;
+}
+
+.button{
+display:inline-block;
+padding:15px 28px;
+background:white;
+color:var(--navy);
+border-radius:12px;
+text-decoration:none;
+font-weight:700;
+}
+
+.hero-right{
+width:440px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.offer-box{
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(12px);
+padding:40px;
+border-radius:22px;
+width:440px;
+min-height:320px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.offer-box h3{
+margin-bottom:24px;
+font-size:28px;
+font-weight:800;
+}
+
+.offer-box ul{
+padding-left:24px;
+font-size:18px;
+line-height:2.2;
+}
+
+section{
+padding:80px 0;
+}
+
+.section-title{
+font-size:42px;
+margin-bottom:30px;
+text-align:center;
+color:var(--navy);
+}
+
+.gray{
+background:var(--gray);
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.card h3{
+margin-bottom:12px;
+}
+
+.calculator{
+background:white;
+padding:40px;
+border-radius:24px;
+max-width:800px;
+margin:auto;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.calculator h3{
+margin-bottom:25px;
+}
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.input-group input{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:10px;
+}
+
+.btn{
+width:100%;
+padding:15px;
+background:var(--green);
+color:white;
+border:none;
+border-radius:12px;
+font-weight:700;
+cursor:pointer;
+font-size:16px;
+}
+
+#result{
+margin-top:25px;
+padding:20px;
+border-radius:16px;
+display:none;
+}
+
+.steps{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.step{
+background:white;
+padding:30px;
+border-radius:20px;
+}
+
+.number{
+width:50px;
+height:50px;
+background:var(--green);
+color:white;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-weight:700;
+margin-bottom:15px;
+}
+
+.faq-item{
+background:white;
+padding:25px;
+margin-bottom:15px;
+border-radius:16px;
+}
+
+/* Sekcja ważne informacje */
+
+.important-section {
+    background: linear-gradient(135deg, #0B1F3A, #1E3A8A);
+    padding: 55px 45px;
+    border-radius: 24px;
+    margin: 20px auto;
+    box-shadow: 0 12px 35px rgba(11, 31, 58, 0.15);
+}
+
+.important-section .section-title {
+    color: white;
+}
+
+/* Rozwijane pytania */
+
+.faq-item {
+    background: white;
+    border-left: 5px solid #22C55E;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.faq-item summary {
+    padding: 22px 25px;
+    cursor: pointer;
+    font-weight: 700;
+    color: #0B1F3A;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: "+";
+    font-size: 25px;
+    color: #22C55E;
+    transition: transform 0.3s ease;
+}
+
+.faq-item[open] summary::after {
+    content: "−";
+}
+
+.faq-item summary:hover {
+    background: #F5F7FB;
+    color: #1E3A8A;
+}
+
+.faq-item p {
+    padding: 15px 60px 30px 60px;
+    margin: 0;
+    color: #374151;
+    font-size: 17px;
+    line-height: 1.8;
+    letter-spacing: 0.1px;
+    max-width: 950px;
+    text-align: left;
+}
+
+.faq-item[open] p {
+    animation: faqFade 0.3s ease;
+}
+
+@keyframes faqFade {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media(max-width:768px) {
+    .important-section {
+        padding: 30px 18px;
+    }
+}
+
+.contact-box{
+background:linear-gradient(135deg,#0B1F3A,#1E3A8A);
+color:white;
+padding:50px;
+border-radius:30px;
+text-align:center;
+}
+
+footer{
+padding:40px;
+text-align:center;
+color:#6b7280;
+}
+
+@media(max-width:768px){
+
+.hero-card{
+padding:35px;
+}
+
+.hero-left h1{
+font-size:38px;
+}
+
+.nav-links{
+display:none;
+}
+
+.hero-right{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="container navbar">
+
+<div class="logo">Energia50001.pl</div>
+
+<div class="nav-links">
+<a href="#kalkulator">Kalkulator</a>
+<a href="#jak-dziala">Jak działa</a>
+<a href="#iso">ISO 50001</a>
+<a href="#faq">FAQ</a>
+<a href="#kontakt">Kontakt</a>
+</div>
+
+</div>
+</nav>
+
+<section class="hero">
+
+<div class="container">
+
+<div class="hero-card">
+
+<div class="hero-left">
+
+<p style="font-size:13px; font-weight:700; letter-spacing:2px; color:#ffffff; margin-bottom:18px;">
+DYREKTYWA EED • PROJEKT UC77
+</p>
+
+<h1>Czy Twoją firmę obejmą nowe obowiązki energetyczne?</h1>
+
+<p>
+Wprowadź zużycie energii z ostatnich 3 lat.<br>
+Kalkulator przeliczy nośniki na TJ i przygotuje wstępną kwalifikację<br>
+do audytu energetycznego lub systemu ISO 50001.
+</p>
+
+<a href="#kalkulator" class="button">
+Sprawdź w kilka minut
+</a>
+
+</div>
+
+<div class="hero-right">
+
+<div class="offer-box">
+
+<h3>Co otrzymujesz?</h3>
+
+<ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:14px; font-size:18px;">
+
+<li style="display:flex; align-items:center; gap:12px;">
+<span style="width:24px; height:24px; min-width:24px; background:#22C55E; color:white; border-radius:5px; display:flex; align-items:center; justify-content:center; font-weight:800;">✓</span>
+Bilans energii w TJ i GWh
+</li>
+
+<li style="display:flex; align-items:center; gap:12px;">
+<span style="width:24px; height:24px; min-width:24px; background:#22C55E; color:white; border-radius:5px; display:flex; align-items:center; justify-content:center; font-weight:800;">✓</span>
+Wstępną kwalifikację obowiązków
+</li>
+
+<li style="display:flex; align-items:center; gap:12px;">
+<span style="width:24px; height:24px; min-width:24px; background:#22C55E; color:white; border-radius:5px; display:flex; align-items:center; justify-content:center; font-weight:800;">✓</span>
+Listę kolejnych kroków
+</li>
+
+<li style="display:flex; align-items:center; gap:12px;">
+<span style="width:24px; height:24px; min-width:24px; background:#22C55E; color:white; border-radius:5px; display:flex; align-items:center; justify-content:center; font-weight:800;">✓</span>
+Raport przesłany na e-mail
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section id="kalkulator" class="gray">
+
+
+
+<div class="container">
+
+
+
+<h2 class="section-title">Kalkulator EDD</h2>
+
+
+
+<div class="calculator">
+
+
+
+<h3>Sprawdź obowiązek audytu energetycznego</h3>
+
+
+
+<div class="input-group">
+<label>Liczba pracowników</label>
+<input type="number" id="employees">
+</div>
+
+
+
+<div class="input-group">
+<label>Roczny obrót (EUR)</label>
+<input type="number" id="turnover">
+</div>
+
+
+
+<div class="input-group">
+<label>Suma bilansowa (EUR)</label>
+<input type="number" id="balance">
+</div>
+
+
+
+<button class="btn" onclick="checkAudit()">
+Sprawdź wynik
+</button>
+
+
+
+<div id="result"></div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+<section id="jak-dziala">
+
+<div class="container">
+
+<h2 class="section-title">Jak działa analiza?</h2>
+
+<div class="steps">
+
+<div class="step">
+<div class="number">1</div>
+<h3>Weryfikujemy firme</h3>
+<p>Na podstawie podanych informacji</p>
+</div>
+
+<div class="step">
+<div class="number">2</div>
+<h3>Analiza</h3>
+<p>Przeliczamy nośniki na TJ<br>i porównujemy średnią z progami.</p>
+</div>
+
+<div class="step">
+<div class="number">3</div>
+<h3>Gotowy wynik w kilka minut</h3>
+<p>Wskazujemy dalsze kroki</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="iso" class="gray">
+
+<div class="container">
+
+<h2 class="section-title">Korzyści z ISO 50001</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Niższe koszty energii</h3>
+<p>Redukcja zużycia energii i kosztów operacyjnych.</p>
+</div>
+
+<div class="card">
+<h3>Zgodność z wymaganiami</h3>
+<p>Spełnienie wymagań związanych z zarządzaniem energią.</p>
+</div>
+
+<div class="card">
+<h3>Lepszy wizerunek</h3>
+<p>Większa wiarygodność wobec klientów i partnerów.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="faq" class="gray"></section>
+
+<div class="container">
+
+<div class="important-section">
+
+<h2 class="section-title">Ważne informacje</h2>
+
+<details class="faq-item">
+    <summary>Czy wynik jest opinią prawną?</summary>
+    <p>Nie. To wstępna kwalifikacja na podstawie danych użytkownika i aktualnej konfiguracji projektu przepisów.</p>
+</details>
+
+<details class="faq-item">
+    <summary>Dlaczego potrzebne są 3 lata?</summary>
+    <p>Progi odnoszą się do średniego rocznego zużycia energii z trzech poprzednich lat.</p>
+</details>
+
+<details class="faq-item">
+    <summary>Czy kalkulator jest bezpłatny?</summary>
+    <p>Tak, wynik generowany jest bez żadnych opłat.</p>
+</details>
+
+<details class="faq-item">
+    <summary>Dla kogo przeznaczona jest usługa?</summary>
+    <p>Dla firm logistycznych.</p>
+</details>
+
+<details class="faq-item">
+    <summary>Czy muszę zgodzić się na marketing?</summary>
+    <p>Nie. Zgoda marketingowa jest całkowicie dobrowolna i nie wpływa na otrzymanie wyniku.</p>
+</details>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="kontakt">
+
+<div class="container">
+
+<div class="contact-box">
+
+<h2>Bezpłatna konsultacja</h2>
+
+<p style="margin-top:20px;">
+Skontaktuj się z nami i sprawdź możliwości wdrożenia ISO 50001.
+</p>
+
+<p style="margin-top:20px;">
+📞 +48 XXX XXX XXX
+</p>
+
+<p>
+✉ kontakt@energia50001.pl
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+© 2026 energia50001.pl •
+<a href="/polityka-prywatnosci.html" class="privacy-link">
+Polityka prywatności
+</a>
+• Metodyka kalkulatora: wersja 2026-11.
+</footer>
+
+<script>
+
+/* ===== WSPÓŁCZYNNIKI ENERGETYCZNE =====
+   Wartości orientacyjne, wymagają zatwierdzenia
+   według przyjętej metodyki przed uruchomieniem.
+   Jednostka współczynnika: kWh na jednostkę.
+*/
+
+const energyCarriers = {
+    "Energia elektryczna": {
+        unit: "MWh",
+        factor: 1000
+    },
+    "Energia elektryczna": {
+        unit: "MWh",
+        factor: 1000
+    },
+    "Gaz ziemny wysokometanowy": {
+        unit: "m³",
+        factor: 10.55
+    },
+    "Gaz ziemny zaazotowany": {
+        unit: "m³",
+        factor: 8.4
+    },
+    "Gaz płynny LPG": {
+        unit: "kg",
+        factor: 12.8
+    },
+    "Olej opałowy": {
+        unit: "l",
+        factor: 10
+    },
+    "Olej napędowy": {
+        unit: "l",
+        factor: 9.8
+    },
+    "Benzyna": {
+        unit: "l",
+        factor: 8.9
+    },
+    "Węgiel kamienny": {
+        unit: "kg",
+        factor: 7.5
+    },
+    "Węgiel brunatny": {
+        unit: "kg",
+        factor: 2.5
+    },
+    "Pellet drzewny": {
+        unit: "kg",
+        factor: 4.8
+    },
+    "Drewno opałowe": {
+        unit: "kg",
+        factor: 4
+    },
+    "Ciepło sieciowe": {
+        unit: "GJ",
+        factor: 277.777778
+    },
+    "Para technologiczna": {
+        unit: "GJ",
+        factor: 277.777778
+    },
+    "Biomasa": {
+        unit: "kg",
+        factor: 4
+    },
+    "Inny nośnik energii": {
+        unit: "MWh",
+        factor: 1000
+    }
+};
+
+const years = [2023, 2024, 2025];
+
+let rowCounter = 0;
+
+
+/* ===== NAWIGACJA ===== */
+
+function goToStep(step) {
+
+    if (step === 2) {
+        if (!document.getElementById("nip").value.trim() ||
+            !document.getElementById("industry").value) {
+            alert("Uzupełnij NIP i wybierz branżę.");
+            goToStep(1);
+            return;
+        }
+    }
+
+    if (step === 3) {
+        const rows = document.querySelectorAll(".energy-row");
+        const hasConsumption = [...rows].some(row =>
+            Number(row.querySelector(".energy-quantity").value) > 0
+        );
+
+        if (!hasConsumption) {
+            alert("Wprowadź zużycie energii przynajmniej za jeden rok.");
+            goToStep(2);
+            return;
+        }
+    }
+
+    [1,2,3].forEach(number => {
+        document.getElementById("calcStep" + number)
+            .classList.toggle("calc-hidden", number !== step);
+
+        document.getElementById("progress" + number)
+            .classList.toggle("active", number <= step);
+    });
+
+}
+
+
+/* ===== WERYFIKACJA NIP ===== */
+
+async function verifyNip() {
+
+    const nip = document.getElementById("nip").value.replace(/\D/g, "");
+    const status = document.getElementById("nipStatus");
+
+    if (!/^\d{10}$/.test(nip)) {
+        status.textContent = "Wprowadź prawidłowy format NIP (10 cyfr).";
+        status.style.color = "#dc2626";
+        return;
+    }
+
+    status.textContent = "Sprawdzanie...";
+    status.style.color = "#1E3A8A";
+
+    try {
+
+        /* Wymagany własny endpoint serwerowy.
+           Nie łączymy się bezpośrednio z API MF z przeglądarki. */
+
+        const response = await fetch("/api/verify-nip", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ nip })
+        });
+
+        if (!response.ok) {
+            throw new Error("Brak dostępnej usługi weryfikacji.");
+        }
+
+        const data = await response.json();
+
+        if (!data || !data.name) {
+            throw new Error("Nie znaleziono danych firmy.");
+        }
+
+        document.getElementById("companyName").value = data.name;
+
+        status.textContent =
+            "✓ NIP zweryfikowany. Status VAT: " +
+            (data.vatStatus || "nieustalony");
+
+        status.style.color = "#15803d";
+
+    } catch (error) {
+
+        status.textContent =
+            "Weryfikacja online nie jest jeszcze podłączona. " +
+            "Wymagana integracja z serwerem i wykazem MF.";
+
+        status.style.color = "#b45309";
+
+    }
+
+}
+
+
+/* ===== GENEROWANIE LAT I WIERSZY ===== */
+
+function createYears() {
+
+    const container = document.getElementById("energyYears");
+
+    years.forEach(year => {
+
+        const yearBox = document.createElement("div");
+
+        yearBox.className = "energy-year";
+        yearBox.id = "year-" + year;
+
+        yearBox.innerHTML = `
+            <h3>${year}</h3>
+
+            <div class="energy-rows"></div>
+
+            <button type="button" class="add-energy"
+            onclick="addEnergyRow(${year})">
+                + Dodaj nośnik
+            </button>
+        `;
+
+        container.appendChild(yearBox);
+
+        addEnergyRow(year, "Energia elektryczna");
+        addEnergyRow(year, "Gaz ziemny wysokometanowy");
+
+    });
+
+    updateEnergySummary();
+
+}
+
+
+function addEnergyRow(year, selectedCarrier = "Energia elektryczna") {
+
+    const row = document.createElement("div");
+
+    row.className = "energy-row";
+    row.dataset.id = ++rowCounter;
+
+    const carrierOptions = Object.keys(energyCarriers)
+        .map(name => `
+            <option value="${name}"
+            ${name === selectedCarrier ? "selected" : ""}>
+                ${name}
+            </option>
+        `).join("");
+
+    row.innerHTML = `
+        <div class="energy-row-grid">
+
+            <div class="carrier-field">
+                <label>Nośnik</label>
+                <select class="energy-carrier"
+                onchange="updateEnergyRow(this)">
+                    ${carrierOptions}
+                </select>
+            </div>
+
+            <div>
+                <label>Jednostka</label>
+                <input class="energy-unit" readonly>
+            </div>
+
+            <div class="quantity-field">
+                <label>Zużycie</label>
+                <input type="number" min="0" step="any"
+                value="0" class="energy-quantity"
+                oninput="updateEnergySummary()">
+            </div>
+
+            <div>
+                <label>Usuń</label>
+                <button type="button" class="remove-energy"
+                onclick="this.closest('.energy-row').remove(); updateEnergySummary();">
+                    ×
+                </button>
+            </div>
+
+        </div>
+
+        <div class="energy-converted">0,00 TJ</div>
+    `;
+
+    document.querySelector("#year-" + year + " .energy-rows")
+        .appendChild(row);
+
+    updateEnergyRow(row.querySelector(".energy-carrier"));
+
+}
+
+
+function updateEnergyRow(select) {
+
+    const row = select.closest(".energy-row");
+    const carrier = energyCarriers[select.value];
+
+    row.querySelector(".energy-unit").value = carrier.unit;
+
+    updateEnergySummary();
+
+}
+
+
+/* ===== PRZELICZENIA ===== */
+
+function updateEnergySummary() {
+
+    let yearlyTotals = {};
+    let completed = 0;
+
+    years.forEach(year => {
+
+        let yearTotal = 0;
+
+        document.querySelectorAll("#year-" + year + " .energy-row")
+            .forEach(row => {
+
+                const carrier = row.querySelector(".energy-carrier").value;
+                const quantity = Number(
+                    row.querySelector(".energy-quantity").value
+                ) || 0;
+
+                const factor = energyCarriers[carrier].factor;
+
+                // kWh × 0,0000036 = TJ
+
+                const tj = quantity * factor * 0.0000036;
+
+                yearTotal += tj;
+
+                row.querySelector(".energy-converted").textContent =
+                    tj.toFixed(4).replace(".", ",") + " TJ";
+
+            });
+
+        yearlyTotals[year] = yearTotal;
+
+        if (yearTotal > 0) {
+            completed++;
+        }
+
+    });
+
+    const total = Object.values(yearlyTotals)
+        .reduce((sum, value) => sum + value, 0);
+
+    const average = total / completed || 0;
+
+    document.getElementById("averageTJ").textContent =
+        average.toFixed(2).replace(".", ",") + " TJ";
+
+    document.getElementById("averageGWh").textContent =
+        (average / 3.6).toFixed(2).replace(".", ",") + " GWh";
+
+    document.getElementById("completedYears").textContent =
+        "Uzupełniono " + completed + " z 3 lat";
+
+}
+
+
+/* ===== ODBLOKOWANIE WYNIKU ===== */
+
+function unlockResult() {
+
+    const name = document.getElementById("contactName").value.trim();
+    const email = document.getElementById("contactEmail").value.trim();
+
+    const privacy = document.getElementById("privacyConsent").checked;
+
+    if (!name || !email || !privacy) {
+        alert("Uzupełnij imię i nazwisko, e-mail oraz zaakceptuj informację o prywatności.");
+        return;
+    }
+
+    if (!document.getElementById("contactEmail").checkValidity()) {
+        alert("Wprowadź prawidłowy adres e-mail.");
+        return;
+    }
+
+    let yearlyTotals = [];
+
+    years.forEach(year => {
+
+        let total = 0;
+
+        document.querySelectorAll("#year-" + year + " .energy-row")
+            .forEach(row => {
+
+                const quantity = Number(
+                    row.querySelector(".energy-quantity").value
+                ) || 0;
+
+                const carrier = row.querySelector(".energy-carrier").value;
+
+                total += quantity * energyCarriers[carrier].factor * 0.0000036;
+
+            });
+
+        yearlyTotals.push({
+            year,
+            tj: total
+        });
+
+    });
+
+    const validYears = yearlyTotals.filter(item => item.tj > 0);
+
+    const average = validYears.reduce(
+        (sum, item) => sum + item.tj, 0
+    ) / validYears.length;
+
+    const result = document.getElementById("finalResult");
+
+    result.classList.remove("calc-hidden");
+
+    result.innerHTML = `
+        <h3>Wstępna analiza energetyczna</h3>
+
+        <p style="margin:15px 0">
+            Dziękujemy za uzupełnienie danych.
+            Poniżej znajduje się podsumowanie zużycia energii.
+        </p>
+
+        <h2 style="color:#15803d;font-size:30px">
+            ${average.toFixed(2).replace(".", ",")} TJ
+        </h2>
+
+        <p>Średnie roczne zużycie energii</p>
+
+        <p style="margin-top:15px">
+            ${validYears.length === 3
+                ? "Dane obejmują wszystkie trzy lata."
+                : "Wynik orientacyjny – dane obejmują " +
+                  validYears.length + " z 3 lat."}
+        </p>
+
+        <p style="margin-top:15px;color:#64748b;font-size:13px">
+            To podsumowanie nie stanowi jeszcze kwalifikacji
+            prawnej. Pełna rekomendacja wymaga zastosowania
+            zatwierdzonych progów i metodyki.
+        </p>
+    `;
+
+    result.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+
+/* ===== START ===== */
+
+createYears();
+
+</script>
+
+</body>
+</html>
