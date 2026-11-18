@@ -1967,98 +1967,62 @@ function getValue(id) {
 
 /* GENEROWANIE RAPORTU */
 
+
 function generateEnergyReport() {
-  const energy = updateEnergySummary();
 
-  document.getElementById("finalAverageTJ").textContent =
-    formatNumber(energy.average / 1000) + " TJ";
+    const energy = updateEnergySummary();
 
-document.getElementById("finalAverageGWh").textContent =
-    formatNumber(energy.average / 3600) + " GWh";
+    if (energy.completed !== 3) {
+        alert("Uzupełnij dane energetyczne za wszystkie 3 lata.");
+        return;
+    }
 
-document.getElementById("finalYears").textContent =
-    energy.completed + "/3 lata";
+    if (!getValue("companyName")) {
+        alert("Uzupełnij dane przedsiębiorstwa.");
+        return;
+    }
 
-  if (energy.completed === 0) {
-    alert("Brak danych energetycznych.");
-    return;
-  }
+    // Zapamiętujemy wynik do późniejszego wygenerowania PDF
+    window.energyReportData = {
+        energy: energy,
+        company: {
+            name: getValue("companyName"),
+            nip: getValue("nip"),
+            regon: getValue("companyRegon"),
+            vat: getValue("companyVat"),
+            address: getValue("companyAddress"),
+            employees: getValue("employees"),
+            locations: getValue("locations")
+        },
+        survey: {
+            profile: getValue("companyProfile"),
+            processes: getValue("processes"),
+            processEnergy: getValue("processEnergy"),
+            installations: getChecked("installationsList"),
+            modernization: getChecked("modernizationList"),
+            documents: getChecked("documentsList"),
+            installDetails: getValue("installDetails"),
+            auditScope: getValue("auditScope"),
+            additionalInfo: getValue("additionalInfo")
+        }
+    };
 
-  const company = getValue("companyName");
-  const nip = getValue("nip");
+    // Pokazujemy wyłącznie krótkie podsumowanie
+    document.getElementById("finalAverageTJ").textContent =
+        formatNumber(energy.average / 1000) + " TJ";
 
-  const rows = energyYears.map(year => `
-    <tr>
-      <td>${year}</td>
-      <td>${formatNumber(energy.totals[year])} GJ</td>
-      <td>${formatNumber(energy.totals[year] / 3600)} GWh</td>
-    </tr>
-  `).join("");
+    document.getElementById("finalAverageGWh").textContent =
+        formatNumber(energy.average / 3600) + " GWh";
 
-  const result = document.getElementById("finalResult");
+    document.getElementById("finalYears").textContent =
+        energy.completed + "/3 lata";
 
-  result.innerHTML = `
-    <h2>${company}</h2>
+    // Nie pokazujemy pełnego raportu
+    document.getElementById("finalResult").innerHTML = "";
 
-    <p><strong>NIP:</strong> ${nip}</p>
-    <p><strong>REGON:</strong> ${getValue("companyRegon") || "Nie podano"}</p>
-    <p><strong>Status VAT:</strong> ${getValue("companyVat") || "Nieustalony"}</p>
-
-    <div class="energy-summary">
-      <div>
-        <small>Średnie zużycie</small>
-        <strong>${formatNumber(energy.average / 1000)} TJ</strong>
-      </div>
-      <div>
-        <small>Średnie zużycie</small>
-        <strong>${formatNumber(energy.average / 3600)} GWh</strong>
-      </div>
-      <div>
-        <small>Zakres danych</small>
-        <strong>${energy.completed}/3 lata</strong>
-      </div>
-    </div>
-
-    <h4>Bilans roczny</h4>
-
-    <table class="report-table">
-      <thead>
-        <tr>
-          <th>Rok</th>
-          <th>Zużycie</th>
-          <th>Zużycie</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-
-    <h4>Informacje o przedsiębiorstwie</h4>
-    <p>Pracownicy: ${getValue("employees") || "Nie podano"}</p>
-    <p>Lokalizacje: ${getValue("locations") || "Nie podano"}</p>
-    <p>Profil działalności: ${getValue("companyProfile") || "Nie podano"}</p>
-    <p>Procesy: ${getValue("processes") || "Nie podano"}</p>
-
-    <h4>Instalacje</h4>
-    <p>${getChecked("installationsList").join(", ") || "Nie zaznaczono"}</p>
-
-    <h4>Modernizacje</h4>
-    <p>${getChecked("modernizationList").join(", ") || "Nie zaznaczono"}</p>
-
-    <h4>Dokumentacja</h4>
-    <p>${getChecked("documentsList").join(", ") || "Nie zaznaczono"}</p>
-
-    <div class="report-warning">
-      <strong>Ważne:</strong>
-      Wynik jest bilansem energetycznym i wstępną analizą.
-      Nie stanowi opinii prawnej ani automatycznego potwierdzenia
-      obowiązku audytu lub wdrożenia ISO 50001.
-      Ostateczna kwalifikacja wymaga zastosowania aktualnych
-      przepisów i zatwierdzonej metodyki.
-    </div>
-  `;
-
-  goToStep(4);
+    goToStep(4);
 }
+
 
 /* START */
 
