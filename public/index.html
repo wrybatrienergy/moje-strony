@@ -1330,97 +1330,95 @@ function validateNip(nip) {
   return sum % 11 === Number(nip[9]);
 }
 
+
 /* POBIERANIE DANYCH Z API MF */
 
-async function verifyCompanyNip(){
+async function verifyCompanyNip() {
+    const requestId = ++nipRequestCounter;
 
-  const requestId = ++nipRequestCounter;
+    const nip = document.getElementById("nip")
+        .value.replace(/\D/g, "");
 
-  const nip = document.getElementById("nip")
-    .value.replace(/\D/g, "");
+    const status = document.getElementById("nipStatus");
+    const button = document.getElementById("verifyNip");
 
-  const status = document.getElementById("nipStatus");
-  const button = document.getElementById("verifyNip");
-
-  if (!validateNip(nip)) {
-    status.textContent = "Nieprawidłowy NIP. Sprawdź 10 cyfr.";
-    status.style.color = "#dc2626";
-    companyVerified = false;
-    return;
-  }
-
-  button.disabled = true;
-  status.textContent = "Pobieranie danych z rejestru MF...";
-  status.style.color = "#1E3A8A";
-
-  try {
-    const response = await fetch(
-      "/api/company/" + encodeURIComponent(nip)
-    );
-
-   const data = await response.json();
-
-if (requestId !== nipRequestCounter) return;
-
-if (!data || typeof data !== "object") {
-    throw new Error("Nieprawidłowa odpowiedź serwera.");
-}
-
-    if (!response.ok) {
-      throw new Error(data.error || "Nie znaleziono firmy.");
+    if (!validateNip(nip)) {
+        status.textContent = "Nieprawidłowy NIP. Sprawdź 10 cyfr.";
+        status.style.color = "#dc2626";
+        companyVerified = false;
+        return;
     }
 
-    document.getElementById("companyName").value =
-      data.name || "";
+    button.disabled = true;
+    status.textContent = "Pobieranie danych z rejestru MF...";
+    status.style.color = "#1E3A8A";
 
-    document.getElementById("companyRegon").value =
-      data.regon || "";
+    try {
+        const response = await fetch(
+            "/api/company/" + encodeURIComponent(nip)
+        );
 
-    document.getElementById("companyVat").value =
-      data.vatStatus || "Brak informacji";
+        const data = await response.json();
 
-    document.getElementById("companyAddress").value =
-      data.residenceAddress ||
-      data.workingAddress || "";
+        if (requestId !== nipRequestCounter) return;
 
-    companyVerified = true;
+        if (!response.ok) {
+            throw new Error(
+                data.error || "Nie znaleziono firmy."
+            );
+        }
 
-document.getElementById("clearCompanyData")
-    .style.display = "inline-block";
+        if (!data || !data.name) {
+            throw new Error("Nieprawidłowa odpowiedź serwera.");
+        }
 
-status.textContent =
-    "✓ Dane pobrane z oficjalnego Wykazu MF.";
+        document.getElementById("companyName").value =
+            data.name || "";
 
-    status.style.color = "#15803d";
+        document.getElementById("companyRegon").value =
+            data.regon || "";
 
-  } catch (error) {
-    companyVerified = false;
+        document.getElementById("companyVat").value =
+            data.vatStatus || "Brak informacji";
 
-    status.textContent = error.message +
-      " Możesz uzupełnić dane ręcznie.";
+        document.getElementById("companyAddress").value =
+            data.residenceAddress ||
+            data.workingAddress || "";
 
-    status.style.color = "#dc2626";
+        companyVerified = true;
 
-} finally {
+        document.getElementById("clearCompanyData")
+            .style.display = "inline-block";
 
-    if (requestId === nipRequestCounter) {
-        button.disabled = false;
+        status.textContent =
+            "✓ Dane pobrane z oficjalnego Wykazu MF.";
+
+        status.style.color = "#15803d";
+
+    } catch (error) {
+        if (requestId !== nipRequestCounter) return;
+
+        companyVerified = false;
+
+        status.textContent =
+            error.message + " Możesz uzupełnić dane ręcznie.";
+
+        status.style.color = "#dc2626";
+
+    } finally {
+        if (requestId === nipRequestCounter) {
+            button.disabled = false;
+        }
     }
-
 }
 
 
 /* CZYSZCZENIE DANYCH FIRMY */
 
-
 function clearCompanyData() {
-
-    // Unieważnij wszystkie rozpoczęte zapytania
     nipRequestCounter++;
 
-    const button = document.getElementById("verifyNip");
-
-    button.disabled = false;
+    document.getElementById("verifyNip").disabled = false;
 
     const fields = [
         "nip",
@@ -1440,52 +1438,42 @@ function clearCompanyData() {
 
     companyVerified = false;
 
-    document.getElementById("clearCompanyData").style.display = "none";
+    document.getElementById("clearCompanyData")
+        .style.display = "none";
 }
 
+
+/* OBSŁUGA PRZYCISKÓW */
 
 document.getElementById("clearCompanyData")
     .addEventListener("click", clearCompanyData);
 
-
 document.getElementById("verifyNip")
-  .addEventListener("click", verifyCompanyNip);
-
-  /* RESET DANYCH PO ZMIANIE NIP */
+    .addEventListener("click", verifyCompanyNip);
 
 
-document.getElementById("nip").addEventListener("input", function() {
+/* RESET DANYCH PO ZMIANIE NIP */
 
-    // Unieważnij poprzednie zapytania
-    nipRequestCounter++;
+document.getElementById("nip")
+    .addEventListener("input", function() {
 
-    companyVerified = false;
+        nipRequestCounter++;
 
-    document.getElementById("nipStatus").textContent = "";
+        companyVerified = false;
 
-    const button = document.getElementById("verifyNip");
-    button.disabled = false;
+        document.getElementById("nipStatus").textContent = "";
 
-    document.getElementById("clearCompanyData").style.display = "none";
+        document.getElementById("verifyNip").disabled = false;
 
-    document.getElementById("companyName").value = "";
-    document.getElementById("companyRegon").value = "";
-    document.getElementById("companyVat").value = "";
-    document.getElementById("companyAddress").value = "";
+        document.getElementById("clearCompanyData")
+            .style.display = "none";
 
-});
+        document.getElementById("companyName").value = "";
+        document.getElementById("companyRegon").value = "";
+        document.getElementById("companyVat").value = "";
+        document.getElementById("companyAddress").value = "";
+    });
 
-
-    document.getElementById("nipStatus").textContent = "";
-
-    document.getElementById("clearCompanyData").style.display = "none";
-
-    document.getElementById("companyName").value = "";
-    document.getElementById("companyRegon").value = "";
-    document.getElementById("companyVat").value = "";
-    document.getElementById("companyAddress").value = "";
-
-});
 
 /* GENEROWANIE LAT */
 
