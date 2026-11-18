@@ -1257,7 +1257,7 @@ Raport przesłany na e-mail
             type="button"
             id="sendEnergyReport">
 
-            Wyślij mi raport na e-mail
+            Wyślij analizę do weryfikacji
 
         </button>
 
@@ -2027,6 +2027,124 @@ function generateEnergyReport() {
 /* START */
 
 createEnergyYears();
+
+
+/* WYSYŁANIE RAPORTU DO TRienergy */
+
+document.getElementById("sendEnergyReport")
+    .addEventListener("click", async function () {
+
+        const name = getValue("contactName");
+        const email = getValue("contactEmail");
+        const phone = getValue("contactPhone");
+        const privacy = document.getElementById("contactPrivacy").checked;
+
+        const status = document.getElementById("emailSendStatus");
+        const button = this;
+
+        if (!name || !email || !phone) {
+            status.textContent = "Uzupełnij wszystkie dane kontaktowe.";
+            status.style.color = "#dc2626";
+            return;
+        }
+
+        if (!document.getElementById("contactEmail").checkValidity()) {
+            status.textContent = "Wpisz prawidłowy adres e-mail.";
+            status.style.color = "#dc2626";
+            return;
+        }
+
+        if (!privacy) {
+            status.textContent = "Zaakceptuj politykę prywatności.";
+            status.style.color = "#dc2626";
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Przesyłanie analizy...";
+        status.textContent = "";
+
+        const energy = updateEnergySummary();
+
+        const yearlyResults = energyYears.map(year => ({
+            year: year,
+            gj: formatNumber(energy.totals[year]),
+            gwh: formatNumber(energy.totals[year] / 3600)
+        }));
+
+        const reportData = {
+            contactName: name,
+            contactEmail: email,
+            contactPhone: phone,
+            privacyAccepted: privacy,
+
+            companyName: getValue("companyName"),
+            nip: getValue("nip"),
+            regon: getValue("companyRegon"),
+            vatStatus: getValue("companyVat"),
+            companyAddress: getValue("companyAddress"),
+
+            employees: getValue("employees"),
+            locations: getValue("locations"),
+
+            averageTJ: formatNumber(energy.average / 1000),
+            averageGWh: formatNumber(energy.average / 3600),
+            completedYears: energy.completed,
+
+            yearlyResults: yearlyResults,
+
+            companyProfile: getValue("companyProfile"),
+            processes: getValue("processes"),
+            processEnergy: getValue("processEnergy"),
+
+            officeBuildings: getValue("officeBuildings"),
+            industrialBuildings: getValue("industrialBuildings"),
+            buildingArea: getValue("buildingArea"),
+
+            heating: getValue("heating"),
+            ventilation: getValue("ventilation"),
+
+            installations: getChecked("installationsList").join(", "),
+            installDetails: getValue("installDetails"),
+
+            modernizations: getChecked("modernizationList").join(", "),
+            documents: getChecked("documentsList").join(", "),
+
+            auditScope: getValue("auditScope"),
+            additionalInfo: getValue("additionalInfo")
+        };
+
+        try {
+            const response = await fetch("/api/send-report", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(reportData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || "Błąd wysyłki.");
+            }
+
+            status.textContent =
+                "✓ Analiza została przekazana do naszego zespołu. Dziękujemy!";
+
+            status.style.color = "#15803d";
+
+            button.textContent = "Analiza wysłana";
+
+        } catch (error) {
+            status.textContent = error.message;
+            status.style.color = "#dc2626";
+
+            button.disabled = false;
+            button.textContent = "Wyślij analizę do weryfikacji";
+        }
+    });
+
 
 
 </script>
