@@ -715,6 +715,23 @@ width:100%;
   }
 }
 
+.clear-btn {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: 9px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.clear-btn:hover {
+    background: #fecaca;
+    transform: translateY(-1px);
+}
 
 </style>
 </head>
@@ -833,6 +850,9 @@ Raport przesłany na e-mail
         </button>
       </div>
       <p id="nipStatus"></p>
+<button type="button" id="clearCompanyData" class="clear-btn">
+    Wyczyść dane firmy ×
+</button>
     </div>
 
     <div class="input-group">
@@ -1239,6 +1259,7 @@ const energyCarriers = {
 
 let energyRowCounter = 0;
 let companyVerified = false;
+let nipRequestCounter = 0;
 
 /* FORMATOWANIE */
 
@@ -1311,7 +1332,10 @@ function validateNip(nip) {
 
 /* POBIERANIE DANYCH Z API MF */
 
-async function verifyCompanyNip() {
+async function verifyCompanyNip(){
+
+  const requestId = ++nipRequestCounter;
+
   const nip = document.getElementById("nip")
     .value.replace(/\D/g, "");
 
@@ -1334,7 +1358,13 @@ async function verifyCompanyNip() {
       "/api/company/" + encodeURIComponent(nip)
     );
 
-    const data = await response.json();
+   const data = await response.json();
+
+if (requestId !== nipRequestCounter) return;
+
+if (!data || typeof data !== "object") {
+    throw new Error("Nieprawidłowa odpowiedź serwera.");
+}
 
     if (!response.ok) {
       throw new Error(data.error || "Nie znaleziono firmy.");
@@ -1355,8 +1385,11 @@ async function verifyCompanyNip() {
 
     companyVerified = true;
 
-    status.textContent =
-      "✓ Dane pobrane z oficjalnego Wykazu MF.";
+document.getElementById("clearCompanyData")
+    .style.display = "inline-block";
+
+status.textContent =
+    "✓ Dane pobrane z oficjalnego Wykazu MF.";
 
     status.style.color = "#15803d";
 
@@ -1368,13 +1401,91 @@ async function verifyCompanyNip() {
 
     status.style.color = "#dc2626";
 
-  } finally {
-    button.disabled = false;
-  }
+} finally {
+
+    if (requestId === nipRequestCounter) {
+        button.disabled = false;
+    }
+
 }
+
+
+/* CZYSZCZENIE DANYCH FIRMY */
+
+
+function clearCompanyData() {
+
+    // Unieważnij wszystkie rozpoczęte zapytania
+    nipRequestCounter++;
+
+    const button = document.getElementById("verifyNip");
+
+    button.disabled = false;
+
+    const fields = [
+        "nip",
+        "companyName",
+        "companyRegon",
+        "companyVat",
+        "companyAddress",
+        "employees",
+        "locations"
+    ];
+
+    fields.forEach(id => {
+        document.getElementById(id).value = "";
+    });
+
+    document.getElementById("nipStatus").textContent = "";
+
+    companyVerified = false;
+
+    document.getElementById("clearCompanyData").style.display = "none";
+}
+
+
+document.getElementById("clearCompanyData")
+    .addEventListener("click", clearCompanyData);
+
 
 document.getElementById("verifyNip")
   .addEventListener("click", verifyCompanyNip);
+
+  /* RESET DANYCH PO ZMIANIE NIP */
+
+
+document.getElementById("nip").addEventListener("input", function() {
+
+    // Unieważnij poprzednie zapytania
+    nipRequestCounter++;
+
+    companyVerified = false;
+
+    document.getElementById("nipStatus").textContent = "";
+
+    const button = document.getElementById("verifyNip");
+    button.disabled = false;
+
+    document.getElementById("clearCompanyData").style.display = "none";
+
+    document.getElementById("companyName").value = "";
+    document.getElementById("companyRegon").value = "";
+    document.getElementById("companyVat").value = "";
+    document.getElementById("companyAddress").value = "";
+
+});
+
+
+    document.getElementById("nipStatus").textContent = "";
+
+    document.getElementById("clearCompanyData").style.display = "none";
+
+    document.getElementById("companyName").value = "";
+    document.getElementById("companyRegon").value = "";
+    document.getElementById("companyVat").value = "";
+    document.getElementById("companyAddress").value = "";
+
+});
 
 /* GENEROWANIE LAT */
 
