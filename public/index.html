@@ -733,6 +733,55 @@ width:100%;
     transform: translateY(-1px);
 }
 
+
+/* NOWOCZESNE, KOMPAKTOWE POLA TEKSTOWE ANKIETY */
+
+.calc-step textarea {
+    width: 100%;
+    min-height: 75px;
+    padding: 12px 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #1F2937;
+    background: #F8FAFC;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    resize: vertical;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.calc-step textarea::placeholder {
+    color: #94A3B8;
+}
+
+.calc-step textarea:focus {
+    background: #FFFFFF;
+    border-color: #1E3A8A;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.08);
+}
+
+.calc-step .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #0B1F3A;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.calc-step .input-group {
+    margin-bottom: 20px;
+}
+
+@media(max-width:650px) {
+    .calc-step textarea {
+        min-height: 70px;
+        padding: 11px 13px;
+    }
+}
+
+
 </style>
 </head>
 
