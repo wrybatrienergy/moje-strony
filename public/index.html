@@ -1052,7 +1052,7 @@ Raport przesłany na e-mail
 
     <div id="installationsList"></div>
 
-    <div class="input-group"><br>
+    <div class="input-group">
       <label>Opis instalacji i parametry techniczne</label>
       <textarea id="installDetails"></textarea>
     </div>
@@ -1086,19 +1086,201 @@ Raport przesłany na e-mail
     </button>
   </div>
 
-  <!-- KROK 4 -->
-  <div class="calc-step calc-hidden" id="calcStep4">
-    <h3>Wynik analizy energetycznej</h3>
-    <div id="finalResult"></div>
 
-    <button class="btn" type="button" onclick="window.print()">
-      Drukuj / zapisz raport PDF
+<!-- KROK 4 -->
+<div class="calc-step calc-hidden" id="calcStep4">
+
+    <h3>Twoja analiza energetyczna jest gotowa!</h3>
+
+    <p style="margin-bottom:25px;color:#64748b;">
+        Wyniki analizy zostały przygotowane.
+        Uzupełnij dane kontaktowe, aby otrzymać kompletny
+        raport energetyczny na swoją skrzynkę e-mail.
+    </p>
+
+    <!-- PODSUMOWANIE ENERGII -->
+
+    <div class="energy-summary">
+
+        <div>
+            <small>Średnie zużycie roczne</small>
+            <strong id="finalAverageTJ">0,000 TJ</strong>
+        </div>
+
+        <div>
+            <small>Odpowiednik energetyczny</small>
+            <strong id="finalAverageGWh">0,000 GWh</strong>
+        </div>
+
+        <div>
+            <small>Zakres danych</small>
+            <strong id="finalYears">0/3 lata</strong>
+        </div>
+
+    </div>
+
+    <!-- INFORMACJA O RAPORCIE -->
+
+    <div style="
+        background:#eff6ff;
+        padding:22px;
+        border-radius:16px;
+        margin:25px 0;
+        border-left:5px solid #1E3A8A;
+    ">
+
+        <h4 style="margin:0 0 10px;color:#0B1F3A;">
+            Twój kompletny raport energetyczny
+        </h4>
+
+        <p style="margin:0;color:#374151;">
+            Otrzymasz dokument PDF zawierający:
+        </p>
+
+        <ul style="padding-left:22px;margin-top:12px;line-height:2;">
+
+            <li>Dane przedsiębiorstwa</li>
+            <li>Bilans energetyczny za poszczególne lata</li>
+            <li>Średnie zużycie energii w TJ i GWh</li>
+            <li>Informacje z ankiety przedsiębiorstwa</li>
+            <li>Wstępną analizę obowiązków energetycznych</li>
+
+        </ul>
+
+        <p style="
+            margin-top:15px;
+            color:#15803d;
+            font-weight:700;
+        ">
+            ✓ Raport otrzymasz bezpośrednio na e-mail.
+        </p>
+
+    </div>
+
+    <!-- FORMULARZ KONTAKTOWY -->
+
+    <div class="energy-year">
+
+        <h3 style="margin-bottom:20px;">
+            Gdzie wysłać Twój raport?
+        </h3>
+
+        <div class="input-group">
+
+            <label for="contactName">
+                Imię i nazwisko *
+            </label>
+
+            <input
+                type="text"
+                id="contactName"
+                placeholder="Wpisz imię i nazwisko"
+                autocomplete="name"
+                required
+            >
+
+        </div>
+
+        <div class="input-group">
+
+            <label for="contactEmail">
+                Adres e-mail *
+            </label>
+
+            <input
+                type="email"
+                id="contactEmail"
+                placeholder="np. jan@firma.pl"
+                autocomplete="email"
+                required
+            >
+
+        </div>
+
+        <div class="input-group">
+
+            <label for="contactPhone">
+                Numer telefonu *
+            </label>
+
+            <input
+                type="tel"
+                id="contactPhone"
+                placeholder="+48 000 000 000"
+                autocomplete="tel"
+                required
+            >
+
+        </div>
+
+        <div style="
+            background:#f8fafc;
+            padding:15px;
+            border-radius:10px;
+            margin:20px 0;
+        ">
+
+            <label style="
+                display:flex;
+                align-items:flex-start;
+                gap:10px;
+                font-size:13px;
+                font-weight:400;
+            ">
+
+                <input
+                    type="checkbox"
+                    id="contactPrivacy"
+                    required
+                    style="margin-top:4px;"
+                >
+
+                <span>
+                    Zapoznałem/am się z
+                    <a href="/polityka-prywatnosci.html"
+                       target="_blank">
+                        Polityką prywatności
+                    </a>
+                    i przyjmuję do wiadomości zasady
+                    przetwarzania danych w celu obsługi
+                    zgłoszenia i wysłania raportu.
+                </span>
+
+            </label>
+
+        </div>
+
+        <button
+            class="btn"
+            type="button"
+            id="sendEnergyReport">
+
+            Wyślij mi raport na e-mail
+
+        </button>
+
+        <p
+            id="emailSendStatus"
+            style="
+                margin-top:15px;
+                font-weight:600;
+                text-align:center;
+            ">
+        </p>
+
+    </div>
+
+    <button
+        class="back-btn"
+        type="button"
+        onclick="goToStep(3)">
+
+        Wróć do ankiety
+
     </button>
 
-    <button class="back-btn" type="button" onclick="goToStep(3)">
-      Wróć do ankiety
-    </button>
-  </div>
+</div>
+
 
 </div>
 </div>
@@ -1785,6 +1967,15 @@ function getValue(id) {
 
 function generateEnergyReport() {
   const energy = updateEnergySummary();
+
+  document.getElementById("finalAverageTJ").textContent =
+    formatNumber(energy.average / 1000) + " TJ";
+
+document.getElementById("finalAverageGWh").textContent =
+    formatNumber(energy.average / 3600) + " GWh";
+
+document.getElementById("finalYears").textContent =
+    energy.completed + "/3 lata";
 
   if (energy.completed === 0) {
     alert("Brak danych energetycznych.");
