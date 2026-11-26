@@ -979,21 +979,6 @@ Raport przesłany na e-mail
 
     <div id="energyYears"></div>
 
-    <div class="energy-summary">
-      <div>
-        <small>Średnie zużycie roczne</small>
-        <strong id="averageTJ">0,000 TJ</strong>
-      </div>
-      <div>
-        <small>Średnie zużycie roczne</small>
-        <strong id="averageGWh">0,000 GWh</strong>
-      </div>
-      <div>
-        <small>Uzupełnione lata</small>
-        <strong id="completedYears">0 z 3</strong>
-      </div>
-    </div>
-
     <button class="btn" type="button" onclick="goToSurveyStep()">
       Dalej – ankieta MŚP
     </button>
@@ -1889,15 +1874,6 @@ function updateEnergySummary() {
   const average = completed > 0
     ? total / completed
     : 0;
-
-  document.getElementById("averageTJ").textContent =
-    formatNumber(average / 1000) + " TJ";
-
-  document.getElementById("averageGWh").textContent =
-    formatNumber(average / 3600) + " GWh";
-
-  document.getElementById("completedYears").textContent =
-    completed + " z 3";
 
   return { totals, average, completed };
 }
